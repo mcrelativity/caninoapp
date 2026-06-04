@@ -1,0 +1,28 @@
+# Node
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Oracle wallet / client
+wallet/
+wallets/
+**/wallet/**
+**/Wallet/**
+
+# Build outputs
+/dist/
+/build/
+
+# VS Code
+.vscode/
