@@ -1,0 +1,17 @@
+[Unit]
+Description=Plataforma Web de Seguimiento y Cuidados Caninos
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/canino-app
+EnvironmentFile=/etc/caninoapp/caninoapp.env
+ExecStart=/usr/bin/node /home/ec2-user/canino-app/app.js
+Restart=always
+RestartSec=5
+SyslogIdentifier=caninoapp
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
