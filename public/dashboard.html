@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Cuidados Caninos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Nunito", "ui-sans-serif", "system-ui"]
+            },
+            colors: {
+              puppy: {
+                50: "#fef7f2",
+                100: "#fde6d8",
+                200: "#f9c9a6",
+                300: "#f5aa73",
+                400: "#f18943",
+                500: "#e87024",
+                600: "#cb5a1c",
+                700: "#a54517",
+                800: "#7d3414",
+                900: "#4f1e0c"
+              },
+              mint: {
+                50: "#f3fbf8",
+                100: "#dff5ee",
+                200: "#b6e8d8",
+                300: "#7fd8bc",
+                400: "#44c59c",
+                500: "#2ea781",
+                600: "#23876a",
+                700: "#1c6954",
+                800: "#164f41",
+                900: "#0d332a"
+              }
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-800">
+    <div class="min-h-screen">
+      <header class="border-b border-slate-200 bg-white">
+        <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-puppy-500">Panel operativo</p>
+            <h1 class="text-xl font-bold">Dashboard de cuidados</h1>
+          </div>
+          <div class="flex items-center gap-3">
+            <a href="/" class="text-sm font-semibold text-slate-500 transition hover:text-puppy-500">Inicio</a>
+            <button
+              id="logoutButton"
+              class="rounded-full border border-puppy-200 px-4 py-2 text-sm font-semibold text-puppy-600 transition hover:bg-puppy-50"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="mx-auto grid max-w-6xl gap-8 px-6 py-8 lg:grid-cols-[0.45fr_0.55fr]">
+        <section class="rounded-3xl bg-white p-6 shadow-lg shadow-slate-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-bold">Perfil canino</h2>
+              <p class="text-sm text-slate-500">Registra y actualiza información del cachorro.</p>
+            </div>
+            <span class="rounded-full bg-mint-50 px-3 py-1 text-xs font-semibold text-mint-700">Activo</span>
+          </div>
+          <form id="profileForm" class="mt-6 space-y-4">
+            <div>
+              <label class="text-xs font-semibold uppercase text-slate-500">Nombre</label>
+              <input name="nombre" required class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm" placeholder="Toby" />
+            </div>
+            <div>
+              <label class="text-xs font-semibold uppercase text-slate-500">Raza</label>
+              <input name="raza" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm" placeholder="Golden Retriever" />
+            </div>
+            <div class="grid gap-3 md:grid-cols-2">
+              <div>
+                <label class="text-xs font-semibold uppercase text-slate-500">Nacimiento</label>
+                <input name="fecha_nacimiento" type="date" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold uppercase text-slate-500">Peso (kg)</label>
+                <input name="peso_actual_kg" type="number" step="0.1" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm" />
+              </div>
+            </div>
+            <button class="w-full rounded-2xl bg-mint-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-mint-200 transition hover:bg-mint-600" type="submit">
+              Guardar perfil
+            </button>
+          </form>
+          <p id="profileMessage" class="mt-4 text-sm text-slate-500"></p>
+        </section>
+
+        <section class="rounded-3xl bg-white p-6 shadow-lg shadow-slate-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-bold">Bitácoras</h2>
+              <p class="text-sm text-slate-500">Crea y visualiza registros diarios.</p>
+            </div>
+            <button id="refreshLogs" class="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-500 transition hover:border-puppy-200">
+              Actualizar
+            </button>
+          </div>
+
+          <form id="logForm" class="mt-6 space-y-4">
+            <div>
+              <label class="text-xs font-semibold uppercase text-slate-500">Categoría</label>
+              <input name="categoria" required class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm" placeholder="Alimentación" />
+            </div>
+            <div>
+              <label class="text-xs font-semibold uppercase text-slate-500">Gramos diarios</label>
+              <input name="gramos_alimento_diario" type="number" step="1" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm" placeholder="320" />
+            </div>
+            <div>
+              <label class="text-xs font-semibold uppercase text-slate-500">Observaciones</label>
+              <textarea name="observaciones" rows="3" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm" placeholder="Notas importantes"></textarea>
+            </div>
+            <button class="w-full rounded-2xl bg-puppy-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-puppy-200 transition hover:bg-puppy-600" type="submit">
+              Crear registro
+            </button>
+          </form>
+
+          <div class="mt-6 space-y-3" id="logsList"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/dashboard.js"></script>
+  </body>
+</html>

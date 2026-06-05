@@ -49,6 +49,14 @@ app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "register.html"));
 });
 
+app.get("/reset-password", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "reset-password.html"));
+});
+
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dashboard.html"));
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: "Recurso no encontrado" });
 });
