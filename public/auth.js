@@ -68,7 +68,7 @@ if (loginForm) {
 
       localStorage.setItem("token", data.token);
       showMessage("Sesión iniciada. Redirigiendo...");
-      setTimeout(() => (window.location.href = "/"), 1200);
+      setTimeout(() => (window.location.href = "/dashboard"), 1200);
     } catch (error) {
       showMessage("Error de conexión. Intenta nuevamente.", true);
     }
@@ -145,6 +145,22 @@ if (resetForm) {
       return showMessage("Las contraseñas no coinciden.", true);
     }
 
-    showMessage("Solicitud registrada. Contacta al administrador para activar el cambio.");
+    try {
+      const response = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        return showMessage(data.message || "No fue posible restablecer la contraseña.", true);
+      }
+
+      showMessage("Contraseña actualizada correctamente. Inicia sesión para continuar.");
+      setTimeout(() => (window.location.href = "/login"), 1500);
+    } catch (error) {
+      showMessage("Error de conexión. Intenta nuevamente.", true);
+    }
   });
 }
