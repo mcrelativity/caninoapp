@@ -9,6 +9,7 @@ dotenv.config();
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const logRoutes = require("./routes/logRoutes");
+const healthRoutes = require("./routes/healthRoutes");
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/auth", authRoutes);
 app.use("/api/perfiles", profileRoutes);
 app.use("/api/bitacoras", logRoutes);
+app.use("/api/health", healthRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Recurso no encontrado" });

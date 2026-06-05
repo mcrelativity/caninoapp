@@ -24,6 +24,7 @@ El usuario seed utiliza contraseña **"password"** (hash bcrypt pre-generado). C
 - `POST /api/perfiles`
 - `GET /api/bitacoras`
 - `POST /api/bitacoras`
+- `GET /api/health` (verifica conectividad con Oracle)
 
 ## Seguridad
 - JWT obligatorio para rutas de CRUD.
