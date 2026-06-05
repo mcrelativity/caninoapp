@@ -24,7 +24,7 @@ app.use(
         frameAncestors: ["'self'"],
         imgSrc: ["'self'", "data:"],
         objectSrc: ["'none'"],
-        scriptSrc: ["'self'", "https://cdn.tailwindcss.com"],
+        scriptSrc: ["'self'", "https://cdn.tailwindcss.com", "'unsafe-inline'"],
         scriptSrcAttr: ["'none'"],
         styleSrc: ["'self'", "https:", "'unsafe-inline'"],
         upgradeInsecureRequests: []
