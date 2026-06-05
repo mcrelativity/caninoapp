@@ -41,6 +41,14 @@ app.use("/api/perfiles", profileRoutes);
 app.use("/api/bitacoras", logRoutes);
 app.use("/api/health", healthRoutes);
 
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "register.html"));
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: "Recurso no encontrado" });
 });

@@ -64,11 +64,15 @@
         <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex">
           <a class="transition hover:text-puppy-500" href="#bitacoras">Bitácoras</a>
           <a class="transition hover:text-puppy-500" href="#rutinas">Rutinas</a>
-          <a class="transition hover:text-puppy-500" href="#login">Ingresar</a>
+          <a class="transition hover:text-puppy-500" href="/login">Ingresar</a>
+          <a class="transition hover:text-puppy-500" href="/register">Registrarse</a>
         </nav>
-        <button class="rounded-full bg-puppy-500 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-puppy-200 transition hover:bg-puppy-600">
-          Nueva bitácora
-        </button>
+        <a
+          href="/login"
+          class="rounded-full bg-puppy-500 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-puppy-200 transition hover:bg-puppy-600"
+        >
+          Acceso seguro
+        </a>
       </div>
     </header>
 
@@ -83,12 +87,18 @@
             Registra hábitos, alimentación y entrenamiento para un cachorro saludable. Diseñado para mejorar el vínculo y la constancia en la educación.
           </p>
           <div class="mt-6 flex flex-wrap gap-4">
-            <button class="rounded-full bg-mint-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-mint-200 transition hover:bg-mint-600">
-              Crear perfil canino
-            </button>
-            <button class="rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-puppy-200">
-              Ver reportes
-            </button>
+            <a
+              href="/register"
+              class="rounded-full bg-mint-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-mint-200 transition hover:bg-mint-600"
+            >
+              Crear cuenta
+            </a>
+            <a
+              href="#bitacoras"
+              class="rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-puppy-200"
+            >
+              Ver bitácoras
+            </a>
           </div>
         </div>
         <div class="rounded-3xl bg-white p-8 shadow-xl shadow-puppy-100">
@@ -169,7 +179,7 @@
         </div>
       </section>
 
-      <section id="rutinas" class="grid gap-8 lg:grid-cols-[1fr_1fr]">
+  <section id="rutinas" class="grid gap-8 lg:grid-cols-[1fr_1fr]">
         <div class="rounded-3xl bg-white p-6 shadow-xl shadow-mint-100">
           <h3 class="text-xl font-bold">Rutina diaria</h3>
           <ul class="mt-4 space-y-3 text-sm text-slate-600">
@@ -194,31 +204,21 @@
 
         <div id="login" class="rounded-3xl bg-white p-6 shadow-xl shadow-puppy-100">
           <h3 class="text-xl font-bold">Acceso seguro</h3>
-          <p class="mt-2 text-sm text-slate-600">Inicia sesión para ver y actualizar la bitácora.</p>
-          <form class="mt-6 space-y-4">
-            <div>
-              <label class="text-xs font-semibold uppercase text-slate-500">Email</label>
-              <input
-                type="email"
-                placeholder="tutor@perritos.com"
-                class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:border-puppy-400 focus:outline-none focus:ring-2 focus:ring-puppy-200"
-              />
-            </div>
-            <div>
-              <label class="text-xs font-semibold uppercase text-slate-500">Contraseña</label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:border-mint-400 focus:outline-none focus:ring-2 focus:ring-mint-200"
-              />
-            </div>
-            <button
-              type="button"
-              class="w-full rounded-2xl bg-puppy-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-puppy-200 transition hover:bg-puppy-600"
+          <p class="mt-2 text-sm text-slate-600">Gestiona perfiles y bitácoras desde un inicio de sesión protegido.</p>
+          <div class="mt-6 space-y-4">
+            <a
+              href="/login"
+              class="block w-full rounded-2xl bg-puppy-500 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-puppy-200 transition hover:bg-puppy-600"
             >
-              Ingresar
-            </button>
-          </form>
+              Iniciar sesión
+            </a>
+            <a
+              href="/register"
+              class="block w-full rounded-2xl border border-puppy-200 bg-white px-4 py-3 text-center text-sm font-semibold text-puppy-600 shadow-sm transition hover:bg-puppy-50"
+            >
+              Crear cuenta
+            </a>
+          </div>
           <p class="mt-4 text-xs text-slate-400">
             Tus datos están protegidos con cifrado y autenticación JWT.
           </p>

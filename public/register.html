@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro | Cuidados Caninos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Nunito", "ui-sans-serif", "system-ui"]
+            },
+            colors: {
+              puppy: {
+                50: "#fef7f2",
+                100: "#fde6d8",
+                200: "#f9c9a6",
+                300: "#f5aa73",
+                400: "#f18943",
+                500: "#e87024",
+                600: "#cb5a1c",
+                700: "#a54517",
+                800: "#7d3414",
+                900: "#4f1e0c"
+              },
+              mint: {
+                50: "#f3fbf8",
+                100: "#dff5ee",
+                200: "#b6e8d8",
+                300: "#7fd8bc",
+                400: "#44c59c",
+                500: "#2ea781",
+                600: "#23876a",
+                700: "#1c6954",
+                800: "#164f41",
+                900: "#0d332a"
+              }
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-puppy-50 via-white to-mint-50 text-slate-800">
+    <main class="mx-auto flex min-h-screen max-w-5xl items-center justify-center px-6 py-12">
+      <section class="w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl shadow-puppy-100">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-puppy-500">Crear cuenta</p>
+            <h1 class="mt-2 text-2xl font-bold">Regístrate</h1>
+          </div>
+          <a
+            href="/"
+            class="text-sm font-semibold text-slate-500 transition hover:text-puppy-500"
+          >
+            Volver
+          </a>
+        </div>
+
+        <form id="registerForm" class="mt-8 space-y-5">
+          <div>
+            <label class="text-xs font-semibold uppercase text-slate-500">Email</label>
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="tutor@perritos.com"
+              class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:border-puppy-400 focus:outline-none focus:ring-2 focus:ring-puppy-200"
+            />
+          </div>
+          <div>
+            <label class="text-xs font-semibold uppercase text-slate-500">Contraseña</label>
+            <input
+              name="password"
+              type="password"
+              required
+              minlength="8"
+              placeholder="Mínimo 8 caracteres"
+              class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:border-mint-400 focus:outline-none focus:ring-2 focus:ring-mint-200"
+            />
+          </div>
+          <div>
+            <label class="text-xs font-semibold uppercase text-slate-500">Confirmar contraseña</label>
+            <input
+              name="confirmPassword"
+              type="password"
+              required
+              minlength="8"
+              placeholder="Repite tu contraseña"
+              class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:border-mint-400 focus:outline-none focus:ring-2 focus:ring-mint-200"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-mint-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-mint-200 transition hover:bg-mint-600"
+          >
+            Crear cuenta
+          </button>
+        </form>
+
+        <div class="mt-6 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
+          <p>¿Ya tienes cuenta?</p>
+          <a class="mt-2 inline-flex font-semibold text-puppy-600 transition hover:text-puppy-700" href="/login">
+            Iniciar sesión
+          </a>
+        </div>
+
+        <p id="registerMessage" class="mt-4 text-sm text-slate-500"></p>
+      </section>
+    </main>
+
+    <script src="/auth.js"></script>
+  </body>
+</html>

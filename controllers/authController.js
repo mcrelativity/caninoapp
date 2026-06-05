@@ -2,12 +2,21 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const oracledb = require("oracledb");
 const { getConnection } = require("../config/db");
+const { validateEmail, validatePassword } = require("../utils/validators");
 
 const register = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ message: "Email y contraseña son obligatorios" });
+  }
+
+  if (!validateEmail(email)) {
+    return res.status(400).json({ message: "Formato de email inválido" });
+  }
+
+  if (!validatePassword(password)) {
+    return res.status(400).json({ message: "La contraseña debe tener 8 caracteres, una mayúscula y un número" });
   }
 
   try {
@@ -47,6 +56,10 @@ const login = async (req, res, next) => {
 
   if (!email || !password) {
     return res.status(400).json({ message: "Email y contraseña son obligatorios" });
+  }
+
+  if (!validateEmail(email)) {
+    return res.status(400).json({ message: "Formato de email inválido" });
   }
 
   try {
