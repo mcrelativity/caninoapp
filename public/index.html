@@ -65,8 +65,9 @@
           <a class="transition hover:text-puppy-500" href="#bitacoras">Bitácoras</a>
           <a class="transition hover:text-puppy-500" href="#rutinas">Rutinas</a>
           <a class="transition hover:text-puppy-500" href="/dashboard">Dashboard</a>
-          <a class="transition hover:text-puppy-500" href="/login">Ingresar</a>
-          <a class="transition hover:text-puppy-500" href="/register">Registrarse</a>
+          <a id="nav-login" class="transition hover:text-puppy-500" href="/login">Ingresar</a>
+          <a id="nav-register" class="transition hover:text-puppy-500" href="/register">Registrarse</a>
+          <button id="nav-logout" class="hidden transition hover:text-puppy-500 cursor-pointer">Cerrar sesión</button>
         </nav>
           <a
             href="/dashboard"
@@ -89,6 +90,7 @@
           </p>
           <div class="mt-6 flex flex-wrap gap-4">
             <a
+              id="hero-register"
               href="/register"
               class="rounded-full bg-mint-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-mint-200 transition hover:bg-mint-600"
             >
@@ -204,9 +206,10 @@
         </div>
 
         <div id="login" class="rounded-3xl bg-white p-6 shadow-xl shadow-puppy-100">
-          <h3 class="text-xl font-bold">Acceso seguro</h3>
-          <p class="mt-2 text-sm text-slate-600">Gestiona perfiles y bitácoras desde un inicio de sesión protegido.</p>
-          <div class="mt-6 space-y-4">
+          <h3 class="text-xl font-bold" id="auth-card-title">Acceso seguro</h3>
+          <p class="mt-2 text-sm text-slate-600" id="auth-card-desc">Gestiona perfiles y bitácoras desde un inicio de sesión protegido.</p>
+          
+          <div id="guest-buttons" class="mt-6 space-y-4">
             <a
               href="/login"
               class="block w-full rounded-2xl bg-puppy-500 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-puppy-200 transition hover:bg-puppy-600"
@@ -226,6 +229,22 @@
               Restablecer contraseña
             </a>
           </div>
+
+          <div id="user-buttons" class="mt-6 hidden space-y-4">
+            <a
+              href="/dashboard"
+              class="block w-full rounded-2xl bg-mint-500 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-mint-200 transition hover:bg-mint-600"
+            >
+              Ir al panel de control
+            </a>
+            <button
+              id="bottom-logout"
+              class="block w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-500 shadow-sm transition hover:border-puppy-200"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+
           <p class="mt-4 text-xs text-slate-400">
             Tus datos están protegidos.
           </p>
@@ -233,6 +252,42 @@
       </section>
     </main>
 
-    
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("token");
+        
+        const navLogin = document.getElementById("nav-login");
+        const navRegister = document.getElementById("nav-register");
+        const navLogout = document.getElementById("nav-logout");
+        const heroRegister = document.getElementById("hero-register");
+        
+        const guestButtons = document.getElementById("guest-buttons");
+        const userButtons = document.getElementById("user-buttons");
+        const authCardTitle = document.getElementById("auth-card-title");
+        const authCardDesc = document.getElementById("auth-card-desc");
+        const bottomLogout = document.getElementById("bottom-logout");
+
+        if (token) {
+          if (navLogin) navLogin.classList.add("hidden");
+          if (navRegister) navRegister.classList.add("hidden");
+          if (navLogout) navLogout.classList.remove("hidden");
+          if (heroRegister) heroRegister.classList.add("hidden");
+          
+          if (guestButtons) guestButtons.classList.add("hidden");
+          if (userButtons) userButtons.classList.remove("hidden");
+          
+          if (authCardTitle) authCardTitle.textContent = "Bienvenido de vuelta";
+          if (authCardDesc) authCardDesc.textContent = "Tu sesión está activa. Continúa gestionando el cuidado de tu mascota.";
+        }
+
+        const handleLogout = () => {
+          localStorage.removeItem("token");
+          window.location.reload();
+        };
+
+        if (navLogout) navLogout.addEventListener("click", handleLogout);
+        if (bottomLogout) bottomLogout.addEventListener("click", handleLogout);
+      });
+    </script>
   </body>
 </html>
