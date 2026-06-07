@@ -46,14 +46,54 @@ const renderLogs = (logs) => {
   logs.forEach((log) => {
     const card = document.createElement("article");
     card.className = "rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm";
+    
+    // Agregamos los botones de Editar y Eliminar en el HTML de la tarjeta
     card.innerHTML = `
-      <p class="text-xs font-semibold uppercase text-puppy-500">${log.CATEGORIA}</p>
+      <div class="flex items-start justify-between">
+        <p class="text-xs font-semibold uppercase text-puppy-500">${log.CATEGORIA}</p>
+        <div class="flex gap-3">
+          <button class="btn-edit text-slate-400 transition hover:text-mint-500" title="Editar registro">✏️</button>
+          <button class="btn-delete text-slate-400 transition hover:text-red-500" title="Eliminar registro">🗑️</button>
+        </div>
+      </div>
       <p class="mt-2 text-slate-700">${log.OBSERVACIONES || "Sin observaciones"}</p>
       <div class="mt-3 flex items-center justify-between text-xs text-slate-400">
         <span>${new Date(log.FECHA_REGISTRO).toLocaleDateString()}</span>
         <span>${log.GRAMOS_ALIMENTO_DIARIO ? log.GRAMOS_ALIMENTO_DIARIO + " g" : ""}</span>
       </div>
     `;
+
+    // Lógica del botón Editar
+    const btnEdit = card.querySelector(".btn-edit");
+    btnEdit.addEventListener("click", () => {
+      // Subimos los datos al formulario
+      logForm.categoria.value = log.CATEGORIA;
+      logForm.gramos_alimento_diario.value = log.GRAMOS_ALIMENTO_DIARIO || "";
+      logForm.observaciones.value = log.OBSERVACIONES || "";
+      logForm.dataset.logId = log.ID; // Guardamos el ID del registro que estamos editando
+      
+      // Cambiamos el estilo del botón para indicar que estamos en "Modo Edición"
+      const submitBtn = logForm.querySelector('button[type="submit"]');
+      submitBtn.textContent = "Actualizar registro";
+      submitBtn.classList.replace("bg-puppy-500", "bg-mint-500");
+      submitBtn.classList.replace("hover:bg-puppy-600", "hover:bg-mint-600");
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Subimos la pantalla hacia el form
+    });
+
+    // Lógica del botón Eliminar
+    const btnDelete = card.querySelector(".btn-delete");
+    btnDelete.addEventListener("click", async () => {
+      if (confirm("¿Estás seguro de que deseas eliminar esta bitácora?")) {
+        try {
+          await apiFetch(`/api/bitacoras/${log.ID}`, { method: "DELETE" });
+          loadLogs(); // Recargamos la lista si se eliminó con éxito
+        } catch (error) {
+          alert("Error al eliminar: " + error.message);
+        }
+      }
+    });
+
     logsList.appendChild(card);
   });
 };
@@ -128,11 +168,30 @@ logForm?.addEventListener("submit", async (event) => {
     observaciones: logForm.observaciones.value.trim()
   };
 
+  const logId = logForm.dataset.logId; // Verificamos si estamos editando
+
   try {
-    await apiFetch("/api/bitacoras", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
+    if (logId) {
+      // Modo Actualización
+      await apiFetch(`/api/bitacoras/${logId}`, {
+        method: "PUT",
+        body: JSON.stringify(payload)
+      });
+      delete logForm.dataset.logId; // Limpiamos el estado de edición
+      
+      // Restauramos el botón a su estado original
+      const submitBtn = logForm.querySelector('button[type="submit"]');
+      submitBtn.textContent = "Crear registro";
+      submitBtn.classList.replace("bg-mint-500", "bg-puppy-500");
+      submitBtn.classList.replace("hover:bg-mint-600", "hover:bg-puppy-600");
+    } else {
+      // Modo Creación
+      await apiFetch("/api/bitacoras", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+    }
+    
     logForm.reset();
     loadLogs();
   } catch (error) {
