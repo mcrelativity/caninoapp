@@ -24,7 +24,8 @@ jobs:
           port: ${{ secrets.EC2_SSH_PORT || 22 }}
           script: |
             set -e
-            cd ${{ secrets.EC2_APP_DIR }}
+            cd ${{ secrets.EC2_APP_DIR }}}
+            git clean -fd
             git pull origin main
             npm install --omit=dev
             sudo systemctl restart caninoapp
