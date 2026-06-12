@@ -39,8 +39,6 @@ JWT_EXPIRES_IN=12h
 - Crear tablas: `db/schema.sql`
 - Insertar datos de prueba: `db/seed.sql`
 
-El usuario seed utiliza contraseña **"password"** (hash bcrypt pre-generado). Cámbiala en ambientes reales.
-
 ## Endpoints principales
 - `POST /api/auth/register`
 - `POST /api/auth/login`
