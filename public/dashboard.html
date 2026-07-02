@@ -102,6 +102,21 @@
             </button>
           </form>
           <p id="profileMessage" class="mt-4 text-sm text-slate-500"></p>
+
+          <div class="mt-6 border-t border-slate-100 pt-6">
+            <label class="text-xs font-semibold uppercase text-slate-500">Foto del perfil</label>
+            <p class="mt-1 text-xs text-slate-400">Guarda el perfil primero. Imagen JPEG, PNG o WEBP, máx. 5MB (almacenada en Azure Blob Storage).</p>
+            <div class="mt-3 flex items-center gap-4">
+              <img id="profilePhoto" class="hidden h-20 w-20 rounded-2xl object-cover" alt="Foto del perfil" />
+              <div class="flex-1 space-y-2">
+                <input id="profilePhotoInput" type="file" accept="image/jpeg,image/png,image/webp" class="w-full text-xs" />
+                <button id="uploadPhotoButton" type="button" class="w-full rounded-2xl bg-slate-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+                  Subir foto
+                </button>
+              </div>
+            </div>
+            <p id="photoMessage" class="mt-2 text-sm text-slate-500"></p>
+          </div>
         </section>
 
         <section class="rounded-3xl bg-white p-6 shadow-lg shadow-slate-100">

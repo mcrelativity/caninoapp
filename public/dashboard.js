@@ -6,6 +6,10 @@ const logsList = document.getElementById("logsList");
 const profileMessage = document.getElementById("profileMessage");
 const refreshLogs = document.getElementById("refreshLogs");
 const logoutButton = document.getElementById("logoutButton");
+const profilePhoto = document.getElementById("profilePhoto");
+const profilePhotoInput = document.getElementById("profilePhotoInput");
+const uploadPhotoButton = document.getElementById("uploadPhotoButton");
+const photoMessage = document.getElementById("photoMessage");
 
 const showMessage = (element, message, isError = false) => {
   element.textContent = message;
@@ -107,6 +111,16 @@ const loadLogs = async () => {
   }
 };
 
+const setProfilePhoto = (fotoUrl) => {
+  if (fotoUrl) {
+    profilePhoto.src = fotoUrl;
+    profilePhoto.classList.remove("hidden");
+  } else {
+    profilePhoto.classList.add("hidden");
+    profilePhoto.removeAttribute("src");
+  }
+};
+
 const loadProfile = async () => {
   try {
     const profiles = await apiFetch("/api/perfiles");
@@ -119,6 +133,7 @@ const loadProfile = async () => {
         : "";
       profileForm.peso_actual_kg.value = profile.PESO_ACTUAL_KG || "";
       profileForm.dataset.profileId = profile.ID;
+      setProfilePhoto(profile.FOTO_URL);
     }
   } catch (error) {
     showMessage(profileMessage, error.message, true);
@@ -196,6 +211,38 @@ logForm?.addEventListener("submit", async (event) => {
     loadLogs();
   } catch (error) {
     logsList.innerHTML = `<p class="text-sm text-red-500">${error.message}</p>`;
+  }
+});
+
+uploadPhotoButton?.addEventListener("click", async () => {
+  const profileId = profileForm.dataset.profileId;
+  if (!profileId) {
+    return showMessage(photoMessage, "Primero guarda un perfil.", true);
+  }
+
+  const file = profilePhotoInput.files[0];
+  if (!file) {
+    return showMessage(photoMessage, "Selecciona una imagen.", true);
+  }
+
+  const formData = new FormData();
+  formData.append("foto", file);
+
+  try {
+    const response = await fetch(`/api/perfiles/${profileId}/foto`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.message || "No se pudo subir la foto");
+    }
+    setProfilePhoto(data.foto_url);
+    profilePhotoInput.value = "";
+    showMessage(photoMessage, "Foto subida correctamente.");
+  } catch (error) {
+    showMessage(photoMessage, error.message, true);
   }
 });
 

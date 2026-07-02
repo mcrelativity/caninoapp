@@ -22,7 +22,7 @@ app.use(
         fontSrc: ["'self'", "https:", "data:"],
         formAction: ["'self'"],
         frameAncestors: ["'self'"],
-        imgSrc: ["'self'", "data:"],
+        imgSrc: ["'self'", "data:", "https://*.blob.core.windows.net"],
         objectSrc: ["'none'"],
         scriptSrc: ["'self'", "https://cdn.tailwindcss.com", "'unsafe-inline'"],
         scriptSrcAttr: ["'none'"],
@@ -62,7 +62,7 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  const status = err.status || 500;
+  const status = err.status || (err.name === "MulterError" ? 400 : 500);
   const message = status >= 500 ? "Error interno del servidor" : err.message;
   res.status(status).json({ message });
 });

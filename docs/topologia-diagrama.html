@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Topología MultiCloud - CaninoApp</title>
+<style>
+  @page { size: A4 landscape; margin: 10mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    color: #1e293b;
+    background: #ffffff;
+    font-size: 10.5px;
+  }
+  h1 {
+    font-size: 17px;
+    margin: 0 0 2px 0;
+    color: #0f172a;
+  }
+  .subtitle {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 10px;
+  }
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+  .arrow-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 78px;
+    text-align: center;
+  }
+  .arrow {
+    font-size: 20px;
+    color: #334155;
+    line-height: 1;
+  }
+  .arrow-label {
+    font-size: 9px;
+    color: #475569;
+    margin-top: 2px;
+    line-height: 1.25;
+  }
+  .box {
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1.5px solid;
+    width: 168px;
+  }
+  .box h3 {
+    margin: 0 0 4px 0;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .box ul {
+    margin: 4px 0 0 0;
+    padding-left: 14px;
+  }
+  .box li { margin-bottom: 2px; }
+  .box .tag {
+    display: inline-block;
+    font-size: 8.5px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    margin-top: 4px;
+  }
+
+  .user { border-color: #94a3b8; background: #f8fafc; }
+  .cicd { border-color: #7c3aed; background: #f5f3ff; }
+  .aws  { border-color: #d97706; background: #fffbeb; }
+  .oci  { border-color: #dc2626; background: #fef2f2; }
+  .azure{ border-color: #2563eb; background: #eff6ff; }
+
+  .vpc-wrap {
+    border: 2px dashed #d97706;
+    border-radius: 12px;
+    padding: 8px;
+    position: relative;
+    background: #fffdf7;
+  }
+  .vpc-label {
+    position: absolute;
+    top: -9px;
+    left: 10px;
+    background: #d97706;
+    color: white;
+    font-size: 8.5px;
+    padding: 1px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .subnet-wrap {
+    border: 1.5px dashed #f59e0b;
+    border-radius: 8px;
+    padding: 11px 10px 6px 10px;
+    position: relative;
+    background: #fff8ec;
+    margin-top: 4px;
+  }
+  .subnet-label {
+    position: absolute;
+    top: -8px;
+    left: 8px;
+    background: #f59e0b;
+    color: white;
+    font-size: 8px;
+    padding: 1px 6px;
+    border-radius: 5px;
+  }
+  .cloud-target {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .down-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 9px;
+    color: #475569;
+  }
+
+  .legend {
+    margin-top: 6px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 9.5px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 5px;
+  }
+  .legend .item { display: flex; align-items: center; gap: 5px; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; border: 1.5px solid; }
+
+  .owasp {
+    margin-top: 6px;
+    border: 1.5px solid #16a34a;
+    background: #f0fdf4;
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+  .owasp h3 { margin: 0 0 4px 0; font-size: 11.5px; color: #14532d; }
+  .owasp .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px 16px;
+    font-size: 9.5px;
+  }
+  .owasp .grid div { display: flex; gap: 4px; }
+  .owasp .grid b { color: #166534; }
+
+  .footer-note {
+    margin-top: 3px;
+    font-size: 8px;
+    color: #94a3b8;
+  }
+</style>
+</head>
+<body>
+  <h1>Topología MultiCloud — Plataforma de Cuidado Canino (CaninoApp)</h1>
+  <div class="subtitle">Arquitectura Sumativa 03 · Arquitectura MultiCloud TI3053 · AWS + OCI + Azure integrados vía app Node.js/Express</div>
+
+  <div class="flow">
+    <div class="col">
+      <div class="box user">
+        <h3>👤 Usuario</h3>
+        Navegador web
+        <ul><li>HTTPS/TLS 1.2+</li></ul>
+      </div>
+    </div>
+
+    <div class="arrow-col">
+      <div class="arrow">→</div>
+      <div class="arrow-label">HTTPS<br/>(puerto 443)</div>
+    </div>
+
+    <div class="col">
+      <div class="box cicd">
+        <h3>⚙️ GitHub Actions</h3>
+        CI/CD Pipeline
+        <ul>
+          <li>build (npm ci + selfcheck)</li>
+          <li>test (jest)</li>
+          <li>deploy (SSH + systemd)</li>
+        </ul>
+        <span class="tag" style="background:#ede9fe;color:#5b21b6;">Trigger: push a main</span>
+      </div>
+    </div>
+
+    <div class="arrow-col">
+      <div class="arrow">→</div>
+      <div class="arrow-label">SSH<br/>(clave privada,<br/>puerto 22)</div>
+    </div>
+
+    <div class="col" style="flex:1;">
+      <div class="vpc-wrap">
+        <span class="vpc-label">AWS VPC — CIDR 10.0.0.0/16 · tag Name=caninoapp-vpc</span>
+        <div class="subnet-wrap">
+          <span class="subnet-label">Subred pública 10.0.1.0/24 · us-east-1a · tag Tier=public</span>
+          <div class="box aws" style="width:190px;">
+            <h3>🖥️ EC2 (App Web)</h3>
+            Node.js + Express + Nginx
+            <ul>
+              <li>Security Group: 80/443 (0.0.0.0/0), 22 (IP admin)</li>
+              <li>systemd: caninoapp.service</li>
+              <li>Controles OWASP Top 10 (ver abajo)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cloud-target" style="margin-top:6px; flex-direction: row; gap: 24px; justify-content: center;">
+        <div class="down-branch">
+          <div class="arrow" style="transform: rotate(90deg);">→</div>
+          <span>mTLS (Wallet)<br/>puerto 1522/TLS</span>
+        </div>
+        <div class="down-branch">
+          <div class="arrow" style="transform: rotate(90deg);">→</div>
+          <span>HTTPS + Shared Key<br/>(backend) + SAS (cliente)</span>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:24px; justify-content:center; margin-top:6px;">
+        <div class="box oci">
+          <h3>🗄️ OCI Autonomous AI Database</h3>
+          Datos estructurados
+          <ul>
+            <li>Conexión cifrada mTLS (Wallet)</li>
+            <li>Credenciales por variables de entorno</li>
+            <li>Health check: <code>GET /api/health</code></li>
+          </ul>
+        </div>
+
+        <div class="box azure">
+          <h3>☁️ Azure Blob Storage</h3>
+          Fotos de perfiles (multimedia) · cuenta prueba3emiliano
+          <ul>
+            <li>Contenedor privado "media" (sin acceso público)</li>
+            <li>Backend: Shared Key (Access Key), nunca expuesta al cliente</li>
+            <li>Acceso a archivos: SAS de solo lectura<br/>generada al vuelo, expira en 10 min</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="owasp">
+    <h3>🛡️ Controles OWASP Top 10 aplicados en la capa de aplicación</h3>
+    <div class="grid">
+      <div><b>A02 Fallas criptográficas:</b> cabeceras de seguridad (Helmet CSP), HTTPS/TLS y mTLS en todas las conexiones a datos</div>
+      <div><b>A03 Inyección:</b> queries 100% parametrizadas (bind variables) en Oracle, sin concatenación de SQL</div>
+      <div><b>A04 Diseño inseguro:</b> validación de archivos subidos (whitelist MIME, límite 5MB) antes de llegar a Azure Blob</div>
+      <div><b>A05 Configuración de seguridad:</b> errores genéricos sin stack trace, CSP restrictiva por defecto</div>
+      <div><b>A07 Fallas de autenticación:</b> rate limiting en login/register (10 intentos/15 min) + bcrypt (10 rounds)</div>
+      <div><b>A01 Control de acceso roto:</b> JWT + verificación de ownership (usuario_id) en cada operación CRUD</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="item"><span class="swatch" style="border-color:#94a3b8;background:#f8fafc;"></span> Usuario/Cliente</div>
+    <div class="item"><span class="swatch" style="border-color:#7c3aed;background:#f5f3ff;"></span> CI/CD (GitHub Actions)</div>
+    <div class="item"><span class="swatch" style="border-color:#d97706;background:#fffbeb;"></span> AWS (VPC / EC2)</div>
+    <div class="item"><span class="swatch" style="border-color:#dc2626;background:#fef2f2;"></span> OCI (Autonomous AI Database)</div>
+    <div class="item"><span class="swatch" style="border-color:#2563eb;background:#eff6ff;"></span> Azure (Blob Storage)</div>
+  </div>
+  <div class="footer-note">Nota: CIDR/subred/tags de la VPC AWS reflejan la configuración de referencia del curso — ajustar a los valores reales provisionados en la cuenta AWS del estudiante antes de la entrega final.</div>
+</body>
+</html>
