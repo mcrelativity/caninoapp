@@ -61,8 +61,6 @@ AZURE_STORAGE_CONTAINER_NAME=media
 - Insertar datos de prueba: `db/seed.sql`
 - Migraciones incrementales: `db/migrations/` (aplicar en orden sobre una base ya existente, ej. `002_add_perfil_foto.sql` agrega la columna `foto_blob_name` usada por la integración con Azure Blob Storage)
 
-El usuario seed utiliza contraseña **"password"** (hash bcrypt pre-generado). Cámbiala en ambientes reales.
-
 ## Azure Blob Storage: creación y control de acceso
 Recursos ya provisionados: cuenta de almacenamiento `prueba3emiliano` con el contenedor privado `media` (sin acceso público de lectura anónima, verificado: una petición sin SAS devuelve `PublicAccessNotPermitted`).
 
