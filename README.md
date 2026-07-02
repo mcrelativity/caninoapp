@@ -1,6 +1,6 @@
 # Plataforma Web de Seguimiento y Cuidados Caninos
 
-Infraestructura MultiCloud (Evaluación Sumativa 03 · Arquitectura MultiCloud TI3053): AWS (EC2 + VPC) para la app web, OCI Autonomous AI Database para datos estructurados, y Azure Blob Storage para archivos/multimedia, con CI/CD en GitHub Actions y controles OWASP Top 10 en la capa de aplicación.
+Infraestructura MultiCloud personal: AWS (EC2 + VPC) para la app web, OCI Autonomous AI Database para datos estructurados, y Azure Blob Storage para archivos/multimedia, con CI/CD en GitHub Actions y controles OWASP Top 10 en la capa de aplicación.
 
 Diagrama de topología completo: [`docs/topologia-diagrama.pdf`](docs/topologia-diagrama.pdf) (también disponible como [PNG](docs/topologia-diagrama.png)).
 
@@ -64,7 +64,7 @@ AZURE_STORAGE_CONTAINER_NAME=media
 ## Azure Blob Storage: creación y control de acceso
 Recursos ya provisionados: cuenta de almacenamiento `prueba3emiliano` con el contenedor privado `media` (sin acceso público de lectura anónima, verificado: una petición sin SAS devuelve `PublicAccessNotPermitted`).
 
-**Decisión de diseño**: la opción ideal era autenticar la app vía un Service Principal con el rol RBAC `Storage Blob Data Contributor` (sin exponer nunca una clave de cuenta). Se evaluó, pero el tenant académico de Azure no permite a cuentas de estudiante crear App Registrations (`az ad sp create-for-rbac` falla por permisos), y no hay administrador disponible para crearlo. Como alternativa segura, la app se autentica con la **Access Key** de la cuenta (`StorageSharedKeyCredential`, solo en el backend, nunca en el cliente) y para cada archivo genera una **SAS de solo lectura de 10 minutos** bajo demanda (`config/blobStorage.js`) — el front-end nunca ve la clave real ni una URL permanente. Esto cumple contenedor privado + política de acceso temporal (SAS); el punto que queda sin RBAC explícito es una limitación de permisos del tenant, no de la implementación.
+**Decisión de diseño**: la opción ideal era autenticar la app vía un Service Principal con el rol RBAC `Storage Blob Data Contributor` (sin exponer nunca una clave de cuenta). Se evaluó, pero la cuenta de Azure usada no tiene permisos para crear App Registrations (`az ad sp create-for-rbac` falla por permisos) y no hay un administrador del tenant disponible para crearlo. Como alternativa segura, la app se autentica con la **Access Key** de la cuenta (`StorageSharedKeyCredential`, solo en el backend, nunca en el cliente) y para cada archivo genera una **SAS de solo lectura de 10 minutos** bajo demanda (`config/blobStorage.js`) — el front-end nunca ve la clave real ni una URL permanente. Esto cumple contenedor privado + política de acceso temporal (SAS); el punto que queda sin RBAC explícito es una limitación de permisos de la cuenta, no de la implementación.
 
 Comandos de referencia si necesitas recrear los recursos:
 ```bash
@@ -143,9 +143,8 @@ Configura estos secretos en GitHub:
 - `EC2_HOST`, `EC2_USER`, `EC2_SSH_KEY`, `EC2_APP_DIR`
 - (opcional) `EC2_SSH_PORT`
 
-## Entregables de la Evaluación Sumativa 03
-- [ ] URL de la aplicación web en producción (EC2)
-- [ ] URL del repositorio GitHub con el pipeline CI/CD (`build` → `test` → `deploy`)
+## Estado del proyecto
+- [ ] Aplicación web en producción (EC2)
+- [ ] Repositorio GitHub con el pipeline CI/CD (`build` → `test` → `deploy`)
 - [ ] Diagrama de topología: [`docs/topologia-diagrama.pdf`](docs/topologia-diagrama.pdf) / [`docs/topologia-diagrama.png`](docs/topologia-diagrama.png)
-- [ ] Video explicativo (máx. 10 min) mostrando: VPC, controles OWASP en vivo, OCI Autonomous AI Database, Azure Blob Storage (subida/descarga de foto), topología explicada, y pipeline CI/CD ejecutándose
-- [ ] Capturas de consola OCI y Azure (anexo o incluidas en el video)
+- [ ] VPC, controles OWASP, OCI Autonomous AI Database y Azure Blob Storage (subida/descarga de foto) funcionando de punta a punta
