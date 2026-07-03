@@ -7,8 +7,10 @@ const profileMessage = document.getElementById("profileMessage");
 const refreshLogs = document.getElementById("refreshLogs");
 const logoutButton = document.getElementById("logoutButton");
 const profilePhoto = document.getElementById("profilePhoto");
+const profilePhotoPlaceholder = document.getElementById("profilePhotoPlaceholder");
+const profilePhotoName = document.getElementById("profilePhotoName");
+const editPhotoButton = document.getElementById("editPhotoButton");
 const profilePhotoInput = document.getElementById("profilePhotoInput");
-const uploadPhotoButton = document.getElementById("uploadPhotoButton");
 const photoMessage = document.getElementById("photoMessage");
 
 const showMessage = (element, message, isError = false) => {
@@ -16,6 +18,11 @@ const showMessage = (element, message, isError = false) => {
   element.className = isError
     ? "mt-4 text-sm font-semibold text-red-500"
     : "mt-4 text-sm font-semibold text-mint-600";
+};
+
+const showPhotoMessage = (message, isError = false) => {
+  photoMessage.textContent = message;
+  photoMessage.className = isError ? "text-sm font-semibold text-red-500" : "text-sm font-semibold text-mint-600";
 };
 
 const ensureAuth = () => {
@@ -115,9 +122,11 @@ const setProfilePhoto = (fotoUrl) => {
   if (fotoUrl) {
     profilePhoto.src = fotoUrl;
     profilePhoto.classList.remove("hidden");
+    profilePhotoPlaceholder.classList.add("hidden");
   } else {
     profilePhoto.classList.add("hidden");
     profilePhoto.removeAttribute("src");
+    profilePhotoPlaceholder.classList.remove("hidden");
   }
 };
 
@@ -133,6 +142,7 @@ const loadProfile = async () => {
         : "";
       profileForm.peso_actual_kg.value = profile.PESO_ACTUAL_KG || "";
       profileForm.dataset.profileId = profile.ID;
+      profilePhotoName.textContent = profile.NOMBRE;
       setProfilePhoto(profile.FOTO_URL);
     }
   } catch (error) {
@@ -164,6 +174,7 @@ profileForm?.addEventListener("submit", async (event) => {
       profileForm.dataset.profileId = created.id;
       showMessage(profileMessage, "Perfil creado correctamente.");
     }
+    profilePhotoName.textContent = payload.nombre;
   } catch (error) {
     showMessage(profileMessage, error.message, true);
   }
@@ -214,19 +225,26 @@ logForm?.addEventListener("submit", async (event) => {
   }
 });
 
-uploadPhotoButton?.addEventListener("click", async () => {
+editPhotoButton?.addEventListener("click", () => {
   const profileId = profileForm.dataset.profileId;
   if (!profileId) {
-    return showMessage(photoMessage, "Primero guarda un perfil.", true);
+    return showPhotoMessage("Primero guarda un perfil.", true);
   }
+  profilePhotoInput.click();
+});
 
+profilePhotoInput?.addEventListener("change", async () => {
+  const profileId = profileForm.dataset.profileId;
   const file = profilePhotoInput.files[0];
-  if (!file) {
-    return showMessage(photoMessage, "Selecciona una imagen.", true);
+  if (!profileId || !file) {
+    return;
   }
 
   const formData = new FormData();
   formData.append("foto", file);
+
+  editPhotoButton.disabled = true;
+  showPhotoMessage("Subiendo foto...");
 
   try {
     const response = await fetch(`/api/perfiles/${profileId}/foto`, {
@@ -239,10 +257,12 @@ uploadPhotoButton?.addEventListener("click", async () => {
       throw new Error(data.message || "No se pudo subir la foto");
     }
     setProfilePhoto(data.foto_url);
-    profilePhotoInput.value = "";
-    showMessage(photoMessage, "Foto subida correctamente.");
+    showPhotoMessage("Foto actualizada correctamente.");
   } catch (error) {
-    showMessage(photoMessage, error.message, true);
+    showPhotoMessage(error.message, true);
+  } finally {
+    editPhotoButton.disabled = false;
+    profilePhotoInput.value = "";
   }
 });
 
