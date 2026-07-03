@@ -59,7 +59,7 @@ AZURE_STORAGE_CONTAINER_NAME=media
 ## Base de datos
 - Crear tablas: `db/schema.sql`
 - Insertar datos de prueba: `db/seed.sql`
-- Migraciones incrementales: `db/migrations/` (aplicar en orden sobre una base ya existente, ej. `002_add_perfil_foto.sql` agrega la columna `foto_blob_name` usada por la integración con Azure Blob Storage)
+- Migraciones incrementales: `db/migrations/` — **deben aplicarse manualmente contra la base real** (no se ejecutan solas en el deploy). Ej. `002_add_perfil_foto.sql` agrega la columna `foto_blob_name` que usa la subida de fotos a Azure Blob Storage; sin ella, `POST /api/perfiles/:id/foto` falla con 500.
 
 ## Azure Blob Storage: creación y control de acceso
 Recursos ya provisionados: cuenta de almacenamiento `prueba3emiliano` con el contenedor privado `media` (sin acceso público de lectura anónima, verificado: una petición sin SAS devuelve `PublicAccessNotPermitted`).
@@ -128,6 +128,8 @@ La app vive en `/home/ec2-user/canino-app` y el Wallet en `/home/ec2-user/wallet
 1) Copia `scripts/nginx-caninoapp.conf` a `/etc/nginx/conf.d/caninoapp.conf`.
 2) `sudo nginx -t`
 3) `sudo systemctl reload nginx`
+
+Importante: `client_max_body_size` debe ser igual o mayor al límite de subida de archivos de la app (5MB, ver `MAX_FILE_SIZE_BYTES` en `config/blobStorage.js`) — si nginx tiene un límite menor, rechaza la subida con `413` antes de que llegue al backend.
 
 ### Verificación rápida
 - `curl -i http://127.0.0.1:3000/api/health`
